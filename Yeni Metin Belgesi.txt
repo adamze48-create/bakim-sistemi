@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakım Takip Sistemi</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #E0F2F1; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); width: 100%; max-width: 400px; border-top: 5px solid #009688; }
+        h2 { color: #00796B; text-align: center; margin-bottom: 5px; }
+        p { text-align: center; color: #666; margin-bottom: 20px; }
+        input, select, button, textarea { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; font-size: 16px; }
+        button { background: #009688; color: white; border: none; font-weight: bold; cursor: pointer; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2 id="m_baslik">Yükleniyor...</h2>
+    <p id="m_kod">Makine Kodu Bekleniyor</p>
+
+    <div id="login">
+        <input type="password" id="pass" placeholder="Giriş Şifresi (1234)">
+        <button onclick="giris()">SİSTEME GİR</button>
+    </div>
+
+    <form id="form" class="hidden" method="POST" action="https://script.google.com/macros/s/AKfycbyOWX0tEiEqY7mpECAVlL7jvC8vmAzCc2Pw4-tTKIUW5RKZ8sGvtQelqN7SUDZRmDPY/exec" target="gizli_frame" onsubmit="bitti()">
+        <input type="hidden" name="Makine" id="makine_id">
+        <input type="text" name="Personel" placeholder="Adınız Soyadınız" required>
+        
+        <label style="display:block; margin-top:15px;"><b>Kontroller:</b></label>
+        <div style="text-align:left; background:#f9f9f9; padding:10px; border-radius:5px; margin-top:5px;">
+            <input type="checkbox" name="Yapilan_Islemler" value="Madde-1" checked> Genel Temizlik ve Kontrol
+        </div>
+
+        <textarea name="Notlar" rows="3" placeholder="Varsa notunuzu yazın..."></textarea>
+        <button type="submit">BAKIMI KAYDET</button>
+    </form>
+</div>
+
+<iframe name="gizli_frame" style="display:none;"></iframe>
+
+<script>
+    // Linkteki ?makine=... kısmını okur
+    const params = new URLSearchParams(window.location.search);
+    const mAdi = params.get('makine');
+    
+    if (mAdi) {
+        document.getElementById("m_baslik").innerText = "Bakım Formu";
+        document.getElementById("m_kod").innerText = mAdi;
+        document.getElementById("makine_id").value = mAdi;
+    }
+
+    function giris() {
+        if(document.getElementById("pass").value === "1234") {
+            document.getElementById("login").classList.add("hidden");
+            document.getElementById("form").classList.remove("hidden");
+        } else { alert("Hatalı Şifre!"); }
+    }
+
+    function bitti() {
+        alert("✅ Kayıt Başarıyla Gönderildi!");
+        setTimeout(() => { location.reload(); }, 1500);
+    }
+</script>
+
+</body>
+</html>
